@@ -1,7 +1,9 @@
 # Kubernetes Workshop
 
 ## Crear Cluster
-Para este paso tenemos la opcion de usar la terminal Cloud Shell que nos proporciona GCP con todas la herramientas instaladas o instalar Cloud SDK de manera local 
+Para este paso tenemos la opcion de usar la terminal Cloud Shell que nos proporciona GCP con todas la herramientas instaladas o instalar Cloud SDK de manera local.
+
+
 
 ### Iniciar Cluster
 ```
@@ -24,6 +26,7 @@ kubectl create namespace kcd-ns
 ```
 
 ## Pods
+Los Pods son las unidades de computación desplegables más pequeñas que se pueden crear y gestionar en Kubernetes.
 
 ### Creando Pod
 ```
@@ -43,7 +46,8 @@ kubectl delete pod nginx-pod -n kcd-ns
 
  
  ## Deployments
- 
+Un Deployment proporciona actualizaciones declarativas para los Pods.
+Cuando se describe el estado deseado con un Deployment, el controlador del Deployment se encarga de cambiar el estado actual al estado deseado de forma controlada.  
 ### Creando Deployment
 ```
 kubectl apply -f Deployment.yaml -n kcd-ns
@@ -67,7 +71,7 @@ kubectl delete pod nginx-pod -n kcd-ns
 kubectl delete -f Deployment.yaml -n kcd-ns
 ```
  ## DaemonSets
- 
+Un DaemonSet garantiza que todos de los nodos ejecuten una copia de un Pod. Conforme se añade más nodos al clúster, nuevos Pods son añadidos a los mismos. Conforme se elimina nodos del clúster, dichos Pods se destruyen. Al eliminar un DaemonSet se limpian todos los Pods que han sido creados.
 ### Creando DaemonSet
 ```
 kubectl apply -f DaemonSet.yaml -n kcd-ns
@@ -94,7 +98,7 @@ kubectl delete -f DaemonSet.yaml -n kcd-ns
 ```
 
 ## StatefulSets
-
+Un StatefulSet se usa para gestionar aplicaciones con estado.Cada uno de los Pods creados tiene su propio identificador persistente que mantiene a lo largo de cualquier re-programación. Su uso es ideal para cuando se necesite almacenamiento persitente e identificadores de red estables.
 ### Creando StatefulSet
 ```
 kubectl apply -f StatefulSet.yaml -n kcd-ns
@@ -150,6 +154,7 @@ kubectl delete pod mysql-statefulset-0 -n kcd-ns
 ```
 
 ## Services 
+Los servicios nos proporcionan una capa de abstraccion para poder acceder a los Pods a traves de la red.
 ### Creando Servicios
 ```
 kubectl apply -f Services.yaml -n kcd-ns
