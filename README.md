@@ -159,3 +159,54 @@ Los servicios nos proporcionan una capa de abstraccion para poder acceder a los 
 ```
 kubectl apply -f Services.yaml -n kcd-ns
 ```
+### Probando ClusterIP
+```
+kubectl get service/mysql-clusterip -n kcd-ns
+
+NAME              TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+mysql-clusterip   ClusterIP   10.44.4.4    <none>        3306/TCP   22m
+
+kubectl get svc -n kcd-ns
+kubectl exec -it ubuntu -n kcd-ns -- /bin/bash
+root@ubuntu:/# apt-get update
+root@ubuntu:/# apt-get install mysql-client
+root@ubuntu:/# mysql -u root -p -h{CLUSTERIP-IP}
+Enter password: 
+mysql> SHOW DATABASES;
++---------------------+
+| Database            |
++---------------------+
+| information_schema  |
+| #mysql50#lost+found |
+| mysql               |
+| performance_schema  |
++---------------------+
+mysql> exit
+Bye
+root@mysql-statefulset-0:/# exit
+exit
+```
+### Probando NodePort
+Desde MySQL Workbench en nuestra maquina local podemos conectarnos mediante la IP de cualquiera de nuestros nodos y el puerto especificado en nuestro NodePort
+```
+kubectl get nodes -n kcd-ns -o wide
+
+NAME                                         STATUS   ROLES    AGE   VERSION            INTERNAL-IP   EXTERNAL-IP                                   
+gke-kcd-cluster-default-pool-ae58e577-dv1w   Ready    <none>   41m   v1.21.5-gke.1302   10.128.0.41   146.148.49.234            
+gke-kcd-cluster-default-pool-ae58e577-fbt3   Ready    <none>   41m   v1.21.5-gke.1302   10.128.0.39   104.198.169.42              
+gke-kcd-cluster-default-pool-ae58e577-jm5s   Ready    <none>   41m   v1.21.5-gke.1302   10.128.0.40   35.223.114.80             
+
+kubectl get service/mysql-nodeport -n kcd-ns
+
+NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+mysql-nodeport   NodePort   10.44.9.241   <none>        3306:30000/TCP   25m
+```
+
+### Probando LoadBalancer
+Desde MySQL Workbench en nuestra maquina local podemos conectarnos mediante la IP y puerto especificado en nuestro LoadBalancer
+```
+kubectl get service/mysql-loadbalancer -n kcd-ns
+
+NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)          AGE
+mysql-loadbalancer   LoadBalancer   10.44.14.87   35.192.27.126   3306:31100/TCP   30m
+```
