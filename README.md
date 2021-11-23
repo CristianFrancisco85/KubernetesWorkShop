@@ -155,6 +155,16 @@ kubectl delete pod mysql-statefulset-0 -n kcd-ns
 
 ## Services 
 Los servicios nos proporcionan una capa de abstraccion para poder acceder a los Pods a traves de la red.
+
+### Instalando NGINX Ingress Controller
+```
+kubectl create ns nginx-ingress
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx 
+helm repo update 
+helm install nginx-ingress ingress-nginx/ingress-nginx -n nginx-ingress
+kubectl get services -n nginx-ingress
+```
+
 ### Creando Servicios
 ```
 kubectl apply -f Services.yaml -n kcd-ns
@@ -209,4 +219,10 @@ kubectl get service/mysql-loadbalancer -n kcd-ns
 
 NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)          AGE
 mysql-loadbalancer   LoadBalancer   10.44.14.87   35.192.27.126   3306:31100/TCP   30m
+```
+### Probando LoadBalancer
+Desde MySQL Workbench en nuestra maquina local podemos conectarnos mediante la IP y puerto especificado en nuestro Load balancer asignado a nuestro Ingress Controller
+```
+kubectl get svc -n nginx-ingress
+
 ```
