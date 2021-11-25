@@ -156,15 +156,6 @@ kubectl delete pod mysql-statefulset-0 -n kcd-ns
 ## Services 
 Los servicios nos proporcionan una capa de abstraccion para poder acceder a los Pods a traves de la red.
 
-### Instalando NGINX Ingress Controller
-```
-kubectl create ns nginx-ingress
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx 
-helm repo update 
-helm install nginx-ingress ingress-nginx/ingress-nginx -n nginx-ingress
-kubectl get services -n nginx-ingress
-```
-
 ### Creando Servicios
 ```
 kubectl apply -f Services.yaml -n kcd-ns
@@ -220,9 +211,27 @@ kubectl get service/mysql-loadbalancer -n kcd-ns
 NAME                 TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)          AGE
 mysql-loadbalancer   LoadBalancer   10.44.14.87   35.192.27.126   3306:31100/TCP   30m
 ```
-### Probando LoadBalancer
-Desde MySQL Workbench en nuestra maquina local podemos conectarnos mediante la IP y puerto especificado en nuestro Load balancer asignado a nuestro Ingress Controller
-```
-kubectl get svc -n nginx-ingress
+## Ingress y ConfigMap
 
+### Instalando NGINX Ingress Controller
+Estos comandos se ejecutaron desde Cloud Shell
 ```
+kubectl create ns nginx-ingress
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx 
+helm repo update 
+helm install nginx-ingress ingress-nginx/ingress-nginx -n nginx-ingress
+```
+### Creando NGINX con ConfigMap y exponiendolo con Ingress
+```
+kubectl apply -f ConfigMap.yaml -n kcd-ns
+```
+### Probando Ingress
+Mendiante la IP del LoadBalancer podemos tener acceso al Ingress Controller
+```
+kubectl get services -n nginx-ingress
+NAME                                              TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
+nginx-ingess-ingress-nginx-controller             LoadBalancer   10.44.14.208   35.232.199.127   80:32331/TCP,443:30643/TCP   50m
+nginx-ingess-ingress-nginx-controller-admission   ClusterIP      10.44.10.254   <none>           443/TCP                      50m
+```
+
+
