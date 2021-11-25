@@ -171,7 +171,7 @@ kubectl get svc -n kcd-ns
 kubectl exec -it ubuntu -n kcd-ns -- /bin/bash
 root@ubuntu:/# apt-get update
 root@ubuntu:/# apt-get install mysql-client
-root@ubuntu:/# mysql -u root -p -h{CLUSTERIP-IP}
+root@ubuntu:/# mysql -u root -p -hmysql-clusterip
 Enter password: 
 mysql> SHOW DATABASES;
 +---------------------+
