@@ -226,7 +226,7 @@ helm install nginx-ingress ingress-nginx/ingress-nginx -n nginx-ingress
 kubectl apply -f ConfigMap.yaml -n kcd-ns
 ```
 ### Probando Ingress
-Mendiante la IP del LoadBalancer podemos tener acceso al Ingress Controller
+Mediante la IP del LoadBalancer podemos tener acceso al Ingress Controller
 ```
 kubectl get services -n nginx-ingress
 NAME                                              TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
