@@ -168,7 +168,7 @@ NAME              TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
 mysql-clusterip   ClusterIP   10.44.4.4    <none>        3306/TCP   22m
 
 kubectl get svc -n kcd-ns
-kubectl exec -it ubuntu -n kcd-ns -- /bin/bash
+kubectl exec -it ubuntu-pod -n kcd-ns -- /bin/bash
 root@ubuntu:/# apt-get update
 root@ubuntu:/# apt-get install mysql-client
 root@ubuntu:/# mysql -u root -p -hmysql-clusterip
