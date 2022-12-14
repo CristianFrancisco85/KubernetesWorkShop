@@ -221,6 +221,7 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update 
 helm install nginx-ingress ingress-nginx/ingress-nginx -n nginx-ingress
 ```
+
 ### Creando NGINX con ConfigMap y exponiendolo con Ingress
 ```
 kubectl apply -f ConfigMap.yaml -n kcd-ns
@@ -232,6 +233,39 @@ kubectl get services -n nginx-ingress
 NAME                                              TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE
 nginx-ingess-ingress-nginx-controller             LoadBalancer   10.44.14.208   35.232.199.127   80:32331/TCP,443:30643/TCP   50m
 nginx-ingess-ingress-nginx-controller-admission   ClusterIP      10.44.10.254   <none>           443/TCP                      50m
+```
+
+## Miscelania 
+
+### Creando dos Ingress Controllers 
+Se crean dos namespaces y se crean un Ingress controller en cada uno
+```
+helm install ingress-nginx-prod ingress-nginx/ingress-nginx  \
+--namespace nginx-ingress \
+--set controller.ingressClassResource.name=nginx-prod \
+--set controller.ingressClass=nginx-prod \
+--set controller.ingressClassResource.controllerValue="k8s.io/ingress-nginx-prod" \
+--set controller.ingressClassResource.enabled=true \
+--set controller.ingressClassByName=true
+
+helm install ingress-nginx-dev ingress-nginx/ingress-nginx  \
+--namespace nginx-ingress-dev \
+--set controller.ingressClassResource.name=nginx-dev \
+--set controller.ingressClass=nginx-dev \
+--set controller.ingressClassResource.controllerValue="k8s.io/ingress-nginx-dev" \
+--set controller.ingressClassResource.enabled=true \
+--set controller.ingressClassByName=true
+```
+
+Para poder usalos se necesita especificar el IngressClass
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apis-ingress
+spec:
+  ingressClassName: nginx-prod
+  rules:
 ```
 
 
