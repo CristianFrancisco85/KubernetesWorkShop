@@ -235,7 +235,7 @@ nginx-ingess-ingress-nginx-controller             LoadBalancer   10.44.14.208   
 nginx-ingess-ingress-nginx-controller-admission   ClusterIP      10.44.10.254   <none>           443/TCP                      50m
 ```
 
-## Miscelania 
+## Miscelánea 
 
 ### Creando dos Ingress Controllers 
 Se crean dos namespaces y se crean un Ingress controller en cada uno
